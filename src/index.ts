@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-var ext_langs = [
+const ext_langs = [
   "ar",
   "af",
   "az",
@@ -38,7 +38,7 @@ var ext_langs = [
   "zh",
 ];
 
-var ext_lang_names_ru = {
+const ext_lang_names_ru = {
   ar: "Арабский",
   af: "Африкаанс",
   az: "Азербайджанский",
@@ -76,7 +76,7 @@ var ext_lang_names_ru = {
   zh: "Китайский",
 };
 
-var ext_lang_alikes = {
+const ext_lang_alikes = {
   ar: ["fa", "ur"],
   af: ["nl"],
   az: ["tr", "uz"],
@@ -114,7 +114,7 @@ var ext_lang_alikes = {
   zh: ["ko", "ja"],
 };
 
-var ext_lang_price = {
+const ext_lang_price = {
   ar: 15,
   af: 15,
   az: 15,
@@ -152,10 +152,10 @@ var ext_lang_price = {
   zh: 10,
 };
 
-var ext_lang;
-var ext_query;
+let ext_lang;
+let ext_query;
 
-var ext_stats = {
+let ext_stats = {
   tries: 0,
   score: 0,
   points: 0,
@@ -165,81 +165,117 @@ var ext_stats = {
   max_langs_excluded: 5,
 };
 
-function queryExtract(lang) {
-  var exscript = $('<script id="ex_script"></script>');
-  exscript.attr(
-    "src",
-    "https://" +
-      lang +
-      ".wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=4&explaintext&generator=random&grnnamespace=0&format=json&formatversion=2&callback=WikiLangGame.renderExtract"
-  );
+interface ExtractResponse {
+  query: {
+    pages: Array<{
+      pageid: string;
+      extract: string;
+    }>;
+  };
+}
+
+function queryExtract(lang: string): void {
+  const exscript = $('<script id="ex_script"></script>');
+
+  const params = new URLSearchParams({
+    action: "query",
+    prop: "extracts",
+    exintro: "",
+    exsentences: "4",
+    explaintext: "",
+    generator: "random",
+    grnnamespace: "0",
+    format: "json",
+    formatversion: "2",
+    callback: "WikiLangGame.renderExtract",
+  });
+
+  exscript.attr("src", `https://${lang}.wikipedia.org/w/api.php?${params}`);
+
   $("#exlang").append(exscript);
 }
 
-export function renderExtract(ext) {
+export function renderExtract(ext: ExtractResponse): void {
   ext_query = ext.query;
+
   $("#ex_div").text(ext_query.pages[0].extract);
   $("#ex_status_price").text(ext_stats.price);
   $("#ex_status_ques").show();
 }
 
-function renderAnswers(ans) {
+function renderAnswers(answers: string[]): void {
   $("#ex_ans").empty();
-  for (var i = 0; i < 4; i++) {
-    var ans_elt = $("<a></a>");
+
+  for (const answer of answers) {
+    const ans_elt = $("<a></a>");
     ans_elt
-      .text(ext_lang_names_ru[ans[i]])
-      .attr("id", "ex_ans_" + ans[i])
+      .text(ext_lang_names_ru[answer])
+      .attr("id", "ex_ans_" + answer)
       .addClass("ex_ans")
-      .attr("href", 'javascript:WikiLangGame.selectAnswer("' + ans[i] + '")');
+      .attr("href", `javascript:WikiLangGame.selectAnswer("${answer}")`);
     $("#ex_ans").append(ans_elt);
   }
 }
 
-function renderNewgame() {
+function renderNewgame(): void {
   $("#ex_script").remove();
   $("#ex_div").text("Loading...");
   $("#ex_statusdiv > *").hide();
 }
 
-function renderEndgame(lang) {
+function renderEndgame(lang: string): void {
   $("#ex_ans .ex_ans").attr("href", "#").css("color", "black");
   $("#ex_ans #ex_ans_" + lang).css("color", "red");
   $("#ex_ans #ex_ans_" + ext_lang).css("color", "green");
   $("#ex_score").text(ext_stats.points + " (" + ext_stats.score + "/" + ext_stats.tries + ")");
   $("#ex_statusdiv > *").hide();
-  if (ext_stats.last_win >= 0)
+
+  if (ext_stats.last_win >= 0) {
     $(ext_stats.last_win == 1 ? "#ex_status_right" : "#ex_status_wrong").show();
-  else if (lang == "exclude") $("#ex_status_exclude").show();
+  } else if (lang == "exclude") {
+    $("#ex_status_exclude").show();
+  }
+
   $("#ex_status_orig_link")
     .attr(
       "href",
-      "https://" + ext_lang + ".wikipedia.org/w/index.php?curid=" + ext_query.pages[0].pageid
+      `https://${ext_lang}.wikipedia.org/w/index.php?curid=${ext_query.pages[0].pageid}`
     )
     .text(ext_query.pages[0].title);
   $("#ex_status_orig").show();
 }
 
-export function refreshExtract() {
+export function refreshExtract(): void {
   renderNewgame();
+
   shuffleArray(ext_langs);
-  var lang = ext_langs[0];
+
+  const lang = ext_langs[0];
   console.log(lang);
+
   ext_stats.price = ext_lang_price[lang];
+
   queryExtract(lang);
-  var ans = [lang];
+
+  const ans = [lang];
+
   shuffleArray(ext_lang_alikes[lang]);
   if (ext_lang_alikes[lang].length > 0) {
     ans.push(ext_lang_alikes[lang][0]);
   }
-  for (var i = 1; ans.length < 4; i++)
+
+  for (let i = 1; ans.length < 4; i++) {
     if (ans.length < 2 || ans[1] != ext_langs[i]) ans.push(ext_langs[i]);
+  }
+
   shuffleArray(ans);
+
   ext_lang = lang;
+
   renderAnswers(ans);
 }
 
-export function selectAnswer(lang) {
+export function selectAnswer(lang: string): void {
   if (lang == ext_lang) {
     ext_stats.score++;
     ext_stats.points += ext_stats.price;
@@ -247,6 +283,7 @@ export function selectAnswer(lang) {
   } else {
     ext_stats.last_win = 0;
   }
+
   ext_stats.tries++;
   renderEndgame(lang);
 }
@@ -259,10 +296,10 @@ export function excludeLanguage() {
   renderEndgame("exclude");
 }
 
-function shuffleArray(d) {
-  for (var c = d.length - 1; c > 0; c--) {
-    var b = Math.floor(Math.random() * (c + 1));
-    var a = d[c];
+function shuffleArray<T>(d: T[]): T[] {
+  for (let c = d.length - 1; c > 0; c--) {
+    const b = Math.floor(Math.random() * (c + 1));
+    const a = d[c];
     d[c] = d[b];
     d[b] = a;
   }
