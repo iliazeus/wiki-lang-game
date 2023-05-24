@@ -20,5 +20,8 @@
     "esbuild": "^0.17.19",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "jquery": "^1.12.4"
   }
 }

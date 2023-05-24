@@ -3,18 +3,13 @@
   <head>
     <title>WikiLangGame</title>
     <meta charset="UTF-8" />
-    <link
-      href="https://d33wubrfki0l68.cloudfront.net/css/edf2433c93d4a102c7618274e63019cff2a66e29/lang.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <input type="submit" value="Вперед" onclick="refreshExtract()" />
+    <input type="submit" value="Вперед" onclick="WikiLangGame.refreshExtract()" />
     <div id="ex_scorediv">Счет: <span id="ex_score">0 (0/0)</span></div>
     <div id="exlang">
-      <script src="https://d33wubrfki0l68.cloudfront.net/bundles/9fd09f632b6f1162e6d90bfec6e0507d2f6895c6.js"></script>
+      <script src="index.bundle.js"></script>
       <script id="ex_script"></script>
       <div id="ex_div">
         <h2>WikiLangGame&nbsp;&mdash; узнай, насколько ты&nbsp;полиглот!</h2>
@@ -42,7 +37,7 @@
       </span>
     </div>
     <div id="footer">
-      <a href="javascript:excludeLanguage()">Can't read the text?</a>
+      <a href="javascript:WikiLangGame.excludeLanguage()">Can't read the text?</a>
       <a href="">Reset score</a>
       <a href="changelog.txt" target="blank">Changelog</a>
       <a href="langlist.txt" target="blank">Language list</a>

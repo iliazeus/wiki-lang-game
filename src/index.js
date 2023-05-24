@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 var ext_langs = [
   "ar",
   "af",
@@ -169,12 +171,12 @@ function queryExtract(lang) {
     "src",
     "http://" +
       lang +
-      ".wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=4&explaintext&generator=random&grnnamespace=0&format=json&formatversion=2&callback=renderExtract"
+      ".wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=4&explaintext&generator=random&grnnamespace=0&format=json&formatversion=2&callback=WikiLangGame.renderExtract"
   );
   $("#exlang").append(exscript);
 }
 
-function renderExtract(ext) {
+export function renderExtract(ext) {
   ext_query = ext.query;
   $("#ex_div").text(ext_query.pages[0].extract);
   $("#ex_status_price").text(ext_stats.price);
@@ -183,13 +185,13 @@ function renderExtract(ext) {
 
 function renderAnswers(ans) {
   $("#ex_ans").empty();
-  for (i = 0; i < 4; i++) {
+  for (var i = 0; i < 4; i++) {
     var ans_elt = $("<a></a>");
     ans_elt
       .text(ext_lang_names_ru[ans[i]])
       .attr("id", "ex_ans_" + ans[i])
       .addClass("ex_ans")
-      .attr("href", 'javascript:selectAnswer("' + ans[i] + '")');
+      .attr("href", 'javascript:WikiLangGame.selectAnswer("' + ans[i] + '")');
     $("#ex_ans").append(ans_elt);
   }
 }
@@ -218,7 +220,7 @@ function renderEndgame(lang) {
   $("#ex_status_orig").show();
 }
 
-function refreshExtract() {
+export function refreshExtract() {
   renderNewgame();
   shuffleArray(ext_langs);
   var lang = ext_langs[0];
@@ -230,14 +232,14 @@ function refreshExtract() {
   if (ext_lang_alikes[lang].length > 0) {
     ans.push(ext_lang_alikes[lang][0]);
   }
-  for (i = 1; ans.length < 4; i++)
+  for (var i = 1; ans.length < 4; i++)
     if (ans.length < 2 || ans[1] != ext_langs[i]) ans.push(ext_langs[i]);
   shuffleArray(ans);
   ext_lang = lang;
   renderAnswers(ans);
 }
 
-function selectAnswer(lang) {
+export function selectAnswer(lang) {
   if (lang == ext_lang) {
     ext_stats.score++;
     ext_stats.points += ext_stats.price;
@@ -249,7 +251,7 @@ function selectAnswer(lang) {
   renderEndgame(lang);
 }
 
-function excludeLanguage() {
+export function excludeLanguage() {
   console.log("excluded: " + ext_lang);
   ext_langs.splice(ext_langs.indexOf(ext_lang), 1);
   ext_stats.langs_excluded++;
