@@ -169,7 +169,7 @@ function queryExtract(lang) {
   var exscript = $('<script id="ex_script"></script>');
   exscript.attr(
     "src",
-    "http://" +
+    "https://" +
       lang +
       ".wikipedia.org/w/api.php?action=query&prop=extracts&exintro&exsentences=4&explaintext&generator=random&grnnamespace=0&format=json&formatversion=2&callback=WikiLangGame.renderExtract"
   );
@@ -214,7 +214,7 @@ function renderEndgame(lang) {
   $("#ex_status_orig_link")
     .attr(
       "href",
-      "http://" + ext_lang + ".wikipedia.org/w/index.php?curid=" + ext_query.pages[0].pageid
+      "https://" + ext_lang + ".wikipedia.org/w/index.php?curid=" + ext_query.pages[0].pageid
     )
     .text(ext_query.pages[0].title);
   $("#ex_status_orig").show();
