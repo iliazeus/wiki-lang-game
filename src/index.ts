@@ -192,7 +192,7 @@ function queryExtract(lang: string): void {
 
   exscript.attr("src", `https://${lang}.wikipedia.org/w/api.php?${params}`);
 
-  $("#exlang").append(exscript);
+  $("body").append(exscript);
 }
 
 export function renderExtract(ext: ExtractResponse): void {
@@ -207,26 +207,29 @@ function renderAnswers(answers: string[]): void {
   $("#ex_ans").empty();
 
   for (const answer of answers) {
-    const ans_elt = $("<a></a>");
+    const ans_elt = $("<button></button>");
     ans_elt
       .text(ext_lang_names_ru[answer])
       .attr("id", "ex_ans_" + answer)
       .addClass("ex_ans")
-      .attr("href", `javascript:WikiLangGame.selectAnswer("${answer}")`);
+      .on("click", () => selectAnswer(answer));
     $("#ex_ans").append(ans_elt);
   }
 }
 
 function renderNewgame(): void {
+  $("#ex_next").text("Пропустить вопрос");
+  $("#ex_ans > button").attr("disabled", null);
   $("#ex_script").remove();
   $("#ex_div").text("Loading...");
   $("#ex_statusdiv > *").hide();
 }
 
 function renderEndgame(lang: string): void {
-  $("#ex_ans .ex_ans").attr("href", "#").css("color", "black");
-  $("#ex_ans #ex_ans_" + lang).css("color", "red");
-  $("#ex_ans #ex_ans_" + ext_lang).css("color", "green");
+  $("#ex_next").text("Следующий вопрос");
+  $("#ex_ans > button").attr("disabled", "");
+  $("#ex_ans_" + lang).css("color", "red");
+  $("#ex_ans_" + ext_lang).css("color", "green");
   $("#ex_score").text(ext_stats.points + " (" + ext_stats.score + "/" + ext_stats.tries + ")");
   $("#ex_statusdiv > *").hide();
 

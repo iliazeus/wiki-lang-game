@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>WikiLangGame</title>
-    <meta charset="UTF-8" />
+
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="index.bundle.js"></script>
   </head>
   <body>
-    <input type="submit" value="Вперед" onclick="WikiLangGame.refreshExtract()" />
-    <div id="ex_scorediv">Счет: <span id="ex_score">0 (0/0)</span></div>
-    <div id="exlang">
-      <script src="index.bundle.js"></script>
-      <script id="ex_script"></script>
-      <div id="ex_div">
-        <h2>WikiLangGame&nbsp;&mdash; узнай, насколько ты&nbsp;полиглот!</h2>
-        <p>
-          Сможешь отличить словацкий язык от&nbsp;словенского, а&nbsp;шведский&nbsp;&mdash;
-          от&nbsp;норвежского? По&nbsp;нажатию кнопки &laquo;Вперед&raquo; тебе будет предложен
-          отрывок статьи из&nbsp;Википедии на&nbsp;некотором языке. Твоя задача проста: угадать
-          язык! Чем сложнее задание, тем больше очков оно принесет.
-        </p>
+    <script id="ex_script"></script>
+    <main>
+      <div id="exlang">
+        <div id="ex_div">
+          <h2>WikiLangGame&nbsp;&mdash; узнай, насколько ты&nbsp;полиглот!</h2>
+          <p>
+            Сможешь отличить словацкий язык от&nbsp;словенского, а&nbsp;шведский&nbsp;&mdash;
+            от&nbsp;норвежского? По&nbsp;нажатию кнопки &laquo;Вперед&raquo; тебе будет предложен
+            отрывок статьи из&nbsp;Википедии на&nbsp;некотором языке. Твоя задача проста: угадать
+            язык! Чем сложнее задание, тем больше очков оно принесет.
+          </p>
 
-        <p>Жми &laquo;Вперед&raquo;, чтобы начать игру.</p>
+          <p>Жми &laquo;Вперед&raquo;, чтобы начать игру.</p>
+        </div>
+
+        <div id="ex_ans"></div>
       </div>
 
-      <div id="ex_ans"></div>
-    </div>
-    <div id="ex_statusdiv">
-      <span id="ex_status_right" style="display: none">Верно! </span>
-      <span id="ex_status_wrong" style="display: none">Неверно! </span>
-      <span id="ex_status_exclude" style="display: none">Язык добавлен в исключения. </span>
-      <span id="ex_status_orig" style="display: none">
-        Оригинал статьи: <a id="ex_status_orig_link" target="blank"></a>
-      </span>
-      <span id="ex_status_ques" style="display: none">
-        Вопрос на <span id="ex_status_price"></span> очков.
-      </span>
-    </div>
-    <div id="footer">
-      <a href="javascript:WikiLangGame.excludeLanguage()">Can't read the text?</a>
-      <a href="">Reset score</a>
-      <a href="changelog.txt" target="blank">Changelog</a>
-      <a href="langlist.txt" target="blank">Language list</a>
-    </div>
+      <button id="ex_next" type="submit" onclick="WikiLangGame.refreshExtract()">Вперед</button>
+      <div id="ex_scorediv">Счет: <span id="ex_score">0 (0/0)</span></div>
+
+      <div id="ex_statusdiv">
+        <span id="ex_status_right" style="display: none">Верно! </span>
+        <span id="ex_status_wrong" style="display: none">Неверно! </span>
+        <span id="ex_status_exclude" style="display: none">Язык добавлен в исключения. </span>
+        <span id="ex_status_orig" style="display: none">
+          Оригинал статьи: <a id="ex_status_orig_link" target="blank"></a>
+        </span>
+        <span id="ex_status_ques" style="display: none">
+          Вопрос на <span id="ex_status_price"></span> очков.
+        </span>
+      </div>
+    </main>
   </body>
 </html>

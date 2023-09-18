@@ -1,21 +1,58 @@
-.ex_ans {
-  margin: 10pt;
+body {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+}
+
+main {
+  max-width: 800px;
+  padding: 5px;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+main > * {
+  margin: 5px;
 }
 
 #ex_ans {
-  margin: 10px;
+  margin-top: 10px;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
-#ex_div {
-  width: 600px;
-  margin: 10px;
+#ex_ans > * {
+  margin: 5px;
+  width: 45%;
+}
+
+button {
+  font-size: large;
+}
+
+#ex_next {
+  width: 200px;
+}
+
+#ex_scorediv {
+  font-size: large;
 }
 
 #footer {
-  font: 8pt sans-serif;
-  margin-top: 20px;
+  position: absolute;
+  bottom: 0;
+
+  font-size: small;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
-#footer a {
-  margin: 8pt;
+#footer > * {
+  margin: 5px;
 }
